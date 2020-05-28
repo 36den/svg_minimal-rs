@@ -225,6 +225,14 @@ mod tests {
     }
 
     #[test]
+    fn test_create_raw_path() {
+        let mut path = Path::new();
+        path.move_to([0,0]);
+        path.line_to([100,100]);
+        assert_eq!("M 0 0 L 100 100 ".to_string(),path.create_raw());
+    }
+
+    #[test]
     fn test_construct_svg() {
         let svg = MinSVG::new([0,0,100,100]);
         assert_eq!([0,0,100,100], svg.viewbox);
