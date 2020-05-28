@@ -66,6 +66,7 @@ impl Path {
         self.rules.pop();
     }
 
+    /// Returns a `String` with a path of type `"<path d=\"...\" stroke=\"...\" stroke-width=\"...\" fill=\"...\" />"`
     pub fn create(&mut self) -> String {
         let mut path = String::new();
 
@@ -114,6 +115,16 @@ impl Path {
             Color::Red => {
                 path.push_str("red\" />");
             },
+        }
+
+        path
+    }
+
+    pub fn create_raw(&mut self) -> String {
+        let mut path = String::new();
+
+        for rule in &self.rules {
+            path.push_str(rule);
         }
 
         path
@@ -249,18 +260,6 @@ mod tests {
         path.line_to([450,500]);
         path.line_to([500,500]);
         path.line_to([0,0]);
-
-        svg.add_path(path);
-
-        let mut path = Path::new();
-        path.set_stroke_color(Color::Black);
-        path.set_fill_color(Color::Black);
-        path.set_stroke_width(3);
-        path.move_to([500,0]);
-        path.line_to([0,500]);
-        path.line_to([50,500]);
-        path.line_to([500,50]);
-        path.line_to([500,0]);
 
         svg.add_path(path);
 
