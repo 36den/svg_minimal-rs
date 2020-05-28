@@ -1,4 +1,4 @@
-/// To specify in which color to draw the path or fill it
+/// To specify in which color to draw either a path or the svg background
 #[derive(Debug,PartialEq)]
 pub enum Color {
     None,
@@ -120,6 +120,12 @@ impl Path {
         path
     }
 
+    /// Adds (for example) `"M 0 0 ... L 100 100"` to the current path rules
+    pub fn add_rule_raw(&mut self, rule: String) {
+        self.rules.push(rule);
+    }
+
+    /// Returns a `String` with path information. Example: `"M 0 0 L 100 100 ..."`
     pub fn create_raw(&mut self) -> String {
         let mut path = String::new();
 
@@ -131,6 +137,7 @@ impl Path {
     }
 }
 
+/// Create an svg structure to hold one or more paths with options to set the viewbox, xmlns, and background color
 pub struct MinSVG {
     viewbox: [usize;4],
     xmlns: Option<String>,
@@ -139,6 +146,9 @@ pub struct MinSVG {
 }
 
 impl MinSVG {
+    /// Construct a new svg with the required viewBox
+    /// 
+    /// Example: `[0,0,100,100]` will result in `viewBox=\"0 0 100 100\"`
     pub fn new(viewbox: [usize;4]) -> MinSVG {
         MinSVG {
             viewbox,
@@ -148,18 +158,22 @@ impl MinSVG {
         }
     }
 
+    /// Set a custom namespace. If not invoked the namespace will be `http://www.w3.org/2000/svg`
     pub fn set_xmlns(&mut self, xmlns: String) {
         self.xmlns = Some(xmlns);
     }
 
+    /// Set a background color. If not invoked there will be none.
     pub fn set_background_color(&mut self, color: Color) {
         self.background = color;
     }
 
+    /// Add a path created with `svg_minimal::Path` to the svg.
     pub fn add_path(&mut self, path: Path) {
         self.paths.push(path);
     }
 
+    /// Will return a complete svg with all the requirements.
     pub fn create(&mut self) -> String {
         let mut svg = String::new();
 
@@ -200,6 +214,38 @@ impl MinSVG {
 
         svg
     }
+
+    /// Will return an svg without the <svg> tag.
+    pub fn create_raw(&mut self) -> String {
+        let mut svg = String::new();
+
+        match &self.background {
+            Color::None => {
+
+            },
+            Color::Black => {
+                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"black"));
+            },
+            Color::Blue => {
+                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"blue"));
+            },
+            Color::Green => {
+                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"green"));
+            },
+            Color::Red => {
+                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"red"));
+            },
+        }
+
+        for path in &mut self.paths {
+            svg.push_str(&*path.create());
+        }
+
+        svg.push_str("</svg>");
+
+        svg
+    }
+
 }
 
 
