@@ -16,6 +16,7 @@ A minimal svg library making use of the `<path>` tag and little else. The only p
 
         path.move_to([0,0]);
         path.line_to([100,100]);
+        path.bezier([100,80,20,0,0,0]); // Hope this is acceptable
 
         svg.add_path(path);
 
