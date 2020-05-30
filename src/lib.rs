@@ -225,7 +225,7 @@ impl MinSVG {
         svg
     }
 
-    /// Will return an svg without the <svg> tag.
+    /// Will return an svg without the `<svg>` tag.
     pub fn create_raw(&mut self) -> String {
         let mut svg = String::new();
 
@@ -321,7 +321,7 @@ mod tests {
 
         svg.add_path(path);
 
-        assert_eq!("<rect width=\"100\" height=\"100\" style=\"fill:rgb(0,0,0)\" /><path d=\"\" stroke=\"rgb(10,100,50)\" stroke-width=\"0\" fill=\"none\" /></svg>cargo ".to_string(),svg.create_raw());
+        assert_eq!("<rect width=\"100\" height=\"100\" style=\"fill:rgb(0,0,0)\" /><path d=\"\" stroke=\"rgb(10,100,50)\" stroke-width=\"0\" fill=\"none\" /></svg>".to_string(),svg.create_raw());
     }
 
     #[test]
@@ -344,6 +344,8 @@ mod tests {
         svg.add_path(path);
 
         svg.set_background_color(Color::Green);
+
+        assert_eq!("<svg viewBox=\"0 0 500 500\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"500\" height=\"500\" style=\"fill:green\" /><path d=\"M 0 0 L 0 50 L 450 500 L 500 500 L 0 0 \" stroke=\"black\" stroke-width=\"3\" fill=\"black\" /></svg>".to_string(),svg.create());
 
         match File::create("test.svg") {
             Ok(mut file) => {
