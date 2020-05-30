@@ -3,7 +3,11 @@ name = "svg_minimal"
 version = "0.1.0"
 authors = ["36den"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "A minimal svg library making use of the <path> elment and little else."
+licence = "MIT OR Apache-2.0"
+keywords = ["svg"]
+categories = ["Multimedia::Images"]
+repository = "https://github.com/36den/svg_minimal-rs"
+readme = "README.md"
 
 [dependencies]
