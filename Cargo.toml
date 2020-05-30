@@ -6,7 +6,7 @@ edition = "2018"
 description = "A minimal svg library making use of the <path> elment and little else."
 license = "MIT OR Apache-2.0"
 keywords = ["svg"]
-categories = ["Multimedia::Images"]
+categories = ["multimedia::images"]
 repository = "https://github.com/36den/svg_minimal-rs"
 readme = "README.md"
 
