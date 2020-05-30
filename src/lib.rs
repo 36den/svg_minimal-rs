@@ -6,6 +6,7 @@ pub enum Color {
     Blue,
     Green,
     Red,
+    RGB(u8,u8,u8),
 }
 
 /// Create a path by specifying stroke, stroke-width, fill and rules such as Move To, etc.
@@ -95,6 +96,9 @@ impl Path {
             Color::Red => {
                 path.push_str("red\" ");
             },
+            Color::RGB(r,g,b) => {
+                path.push_str(&format!("rgb({},{},{})\" ",r,g,b));
+            },
         }
 
         path.push_str(&format!("stroke-width=\"{}\" fill=\"", self.stroke_width));
@@ -114,6 +118,9 @@ impl Path {
             },
             Color::Red => {
                 path.push_str("red\" />");
+            },
+            Color::RGB(r,g,b) => {
+                path.push_str(&format!("rgb({},{},{})\" />",r,g,b));
             },
         }
 
@@ -204,6 +211,9 @@ impl MinSVG {
             Color::Red => {
                 svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"red"));
             },
+            Color::RGB(r,g,b) => {
+                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:rgb({},{},{})\" />", self.viewbox[2], self.viewbox[3],r,g,b));
+            },
         }
 
         for path in &mut self.paths {
@@ -234,6 +244,9 @@ impl MinSVG {
             },
             Color::Red => {
                 svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"red"));
+            },
+            Color::RGB(r,g,b) => {
+                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:rgb({},{},{})\" />", self.viewbox[2], self.viewbox[3],r,g,b));
             },
         }
 
@@ -299,7 +312,20 @@ mod tests {
     }
 
     #[test]
-    fn test_create_svg1() {
+    fn test_svg_and_path_rgb() {
+        let mut svg = MinSVG::new([0,0,100,100]);
+        svg.set_background_color(Color::RGB(0,0,0));
+
+        let mut path = Path::new();
+        path.set_stroke_color(Color::RGB(10,100,50));
+
+        svg.add_path(path);
+
+        assert_eq!("<rect width=\"100\" height=\"100\" style=\"fill:rgb(0,0,0)\" /><path d=\"\" stroke=\"rgb(10,100,50)\" stroke-width=\"0\" fill=\"none\" /></svg>cargo ".to_string(),svg.create_raw());
+    }
+
+    #[test]
+    fn test_create_svg() {
         use std::fs::File;
         use std::io::prelude::*;
 
