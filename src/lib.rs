@@ -225,42 +225,7 @@ impl MinSVG {
         svg
     }
 
-    /// Will return an svg without the `<svg>` tag.
-    pub fn create_raw(&mut self) -> String {
-        let mut svg = String::new();
-
-        match &self.background {
-            Color::None => {
-
-            },
-            Color::Black => {
-                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"black"));
-            },
-            Color::Blue => {
-                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"blue"));
-            },
-            Color::Green => {
-                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"green"));
-            },
-            Color::Red => {
-                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"red"));
-            },
-            Color::RGB(r,g,b) => {
-                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:rgb({},{},{})\" />", self.viewbox[2], self.viewbox[3],r,g,b));
-            },
-        }
-
-        for path in &mut self.paths {
-            svg.push_str(&*path.create());
-        }
-
-        svg.push_str("</svg>");
-
-        svg
-    }
-
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -321,7 +286,7 @@ mod tests {
 
         svg.add_path(path);
 
-        assert_eq!("<rect width=\"100\" height=\"100\" style=\"fill:rgb(0,0,0)\" /><path d=\"\" stroke=\"rgb(10,100,50)\" stroke-width=\"0\" fill=\"none\" /></svg>".to_string(),svg.create_raw());
+        assert_eq!("<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"100\" height=\"100\" style=\"fill:rgb(0,0,0)\" /><path d=\"\" stroke=\"rgb(10,100,50)\" stroke-width=\"0\" fill=\"none\" /></svg>".to_string(),svg.create());
     }
 
     #[test]
