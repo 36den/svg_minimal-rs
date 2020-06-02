@@ -2,6 +2,7 @@
 #[derive(Debug,PartialEq)]
 pub enum Color {
     None,
+    White,
     Black,
     Blue,
     Green,
@@ -84,6 +85,9 @@ impl Path {
             Color::None => {
                 path.push_str("none\" ");
             },
+            Color::White => {
+                path.push_str("white\" ");
+            },
             Color::Black => {
                 path.push_str("black\" ");
             },
@@ -106,6 +110,9 @@ impl Path {
         match &self.fill {
             Color::None => {
                 path.push_str("none\" />");
+            },
+            Color::White => {
+                path.push_str("white\" />");
             },
             Color::Black => {
                 path.push_str("black\" />");
@@ -199,6 +206,9 @@ impl MinSVG {
             Color::None => {
 
             },
+            Color::White => {
+                svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"white"));
+            },
             Color::Black => {
                 svg.push_str(&format!("<rect width=\"{}\" height=\"{}\" style=\"fill:{}\" />", self.viewbox[2], self.viewbox[3],"black"));
             },
@@ -291,9 +301,6 @@ mod tests {
 
     #[test]
     fn test_create_svg() {
-        use std::fs::File;
-        use std::io::prelude::*;
-
         let mut svg = MinSVG::new([0,0,500,500]);
 
         let mut path = Path::new();
@@ -312,21 +319,6 @@ mod tests {
 
         assert_eq!("<svg viewBox=\"0 0 500 500\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"500\" height=\"500\" style=\"fill:green\" /><path d=\"M 0 0 L 0 50 L 450 500 L 500 500 L 0 0 \" stroke=\"black\" stroke-width=\"3\" fill=\"black\" /></svg>".to_string(),svg.create());
 
-        match File::create("test.svg") {
-            Ok(mut file) => {
-                match file.write_all(svg.create().as_bytes()) {
-                    Ok(()) => {
-                        assert!(true);
-                    },
-                    Err(e) => {
-                        panic!(e);
-                    }
-                }
-            },
-            Err(e) => {
-                panic!(e);
-            }
-        }
     }
 
  }
