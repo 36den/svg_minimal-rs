@@ -18,7 +18,7 @@ A minimal svg library making use of the `<path>` tag and little else. The only p
         path.line_to([100,100]);
         path.bezier([100,80,20,0,0,0]); // Hope this works :)
 
-        path.set_fill_color(Color:Black); // Fill the drawn path if you want to;
+        path.set_fill_color(Color::Black); // Fill the drawn path if you want to;
 
         svg.add_path(path); // Add the path to the svg
 
