@@ -3,7 +3,7 @@
 A minimal svg library making use of the `<path>` tag and little else. The only path options are `M: move to`, `L: line to`, `C: bezier curve` and `Z: close path`.
 
 ## Example
-```Rust
+```
     use svg_minimal::*;
 
     fn main() {
